@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Editar estado | {{ user_game.game.title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h3 class="mb-4">Editar estado de "{{ user_game.game.title }}"</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_status" class="form-label">Estado:</label>
+                    {{ form.status }}
+                </div>
+                <button class="btn btn-primary w-100">Guardar cambios</button>
+            </form>
+            <a href="{% url 'my_collection' %}" class="btn btn-outline-light mt-3 w-100">Cancelar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

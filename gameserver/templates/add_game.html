@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Añadir juego al catálogo{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4 text-white">
+            <h3 class="mb-4">Añadir nuevo juego al catálogo</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success w-100">Añadir</button>
+            </form>
+            <a href="{% url 'game_list' %}" class="btn btn-outline-light mt-3 w-100">Cancelar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

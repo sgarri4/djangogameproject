@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Inicio | Biblioteca de Videojuegos{% endblock %}
+{% block content %}
+<div class="text-center mt-5 text-white">
+    <h1 class="display-4">🎮 Bienvenido a tu Biblioteca de Videojuegos</h1>
+    <p class="lead mt-4">
+        Lleva el control de tus juegos, comparte reseñas y descubre nuevos títulos.<br>
+        ¡Empieza a construir tu colección hoy!
+    </p>
+    <a href="{% url 'game_list' %}" class="btn btn-primary btn-lg mt-3">Explorar Catálogo</a>
+    <a href="{% url 'my_collection' %}" class="btn btn-outline-light btn-lg mt-3 ms-2">Ver Colección</a>
+</div>
+{% endblock %}

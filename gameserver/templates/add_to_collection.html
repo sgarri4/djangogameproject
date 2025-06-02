@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Añadir Juego a Colección{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h3 class="mb-4">Añadir juego a tu colección</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="game_id" class="form-label">Juego:</label>
+                    <select name="game_id" id="game_id" class="form-select">
+                        {% for game in games %}
+                        <option value="{{ game.id }}">{{ game.title }} ({{ game.platform }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Estado:</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="pending">Pendiente</option>
+                        <option value="playing">Jugando</option>
+                        <option value="completed">Completado</option>
+                        <option value="abandoned">Abandonado</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary w-100">Añadir a colección</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

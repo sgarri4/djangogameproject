@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}{{ game.title }} | Detalle{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if game.cover %}
+            <img src="{{ game.cover.url }}" class="img-fluid rounded shadow" alt="{{ game.title }}">
+        {% else %}
+            <img src="https://placehold.co/400x500?text=Sin+Portada" class="img-fluid rounded shadow" alt="{{ game.title }}">
+        {% endif %}
+    </div>
+    <div class="col-md-8 text-white">
+        <h2>{{ game.title }}</h2>
+        <p>
+            <strong>Plataforma:</strong> {{ game.platform }}<br>
+            <strong>Desarrollador:</strong> {{ game.developer }}<br>
+            <strong>Lanzamiento:</strong> {{ game.release_date|date:"d/m/Y" }}
+        </p>
+        <p>
+            <strong>Puntuación media:</strong>
+            {% if avg_rating %}
+                <span class="star">
+                    {% for _ in "12345"|slice:":stars" %}
+                        ★
+                    {% endfor %}
+                </span>
+                <span>({{ avg_rating|floatformat:1 }}/5)</span>
+            {% else %}
+                Sin puntuaciones aún.
+            {% endif %}
+        </p>
+        {% if user_game %}
+            <a href="{% url 'add_review' user_game.id %}" class="btn btn-primary">Reseñar este juego</a>
+            <a href="{% url 'edit_status' user_game.id %}" class="btn btn-outline-light ms-2">Editar estado</a>
+        {% else %}
+            <a href="{% url 'add_to_collection' %}" class="btn btn-primary">Añadir a la colección</a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<h4 class="mt-4 text-white">Reseñas</h4>
+<div class="list-group">
+    {% for review in reviews %}
+        <div class="list-group-item bg-transparent border-0 text-white">
+            <div>
+                <span class="star">
+                    {% for _ in "12345"|slice:":review.rating" %}
+                        ★
+                    {% endfor %}
+                </span>
+                <span class="text-white-50">- {{ review.created_at|date:"d/m/Y" }}</span>
+            </div>
+            <div>{{ review.text|linebreaks }}</div>
+        </div>
+    {% empty %}
+        <div class="alert alert-info">Aún no hay reseñas para este juego.</div>
+    {% endfor %}
+</div>
+{% endblock %}

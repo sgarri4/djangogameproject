@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Catálogo de Juegos{% endblock %}
+{% block content %}
+<h2 class="mb-4 text-white">Catálogo de Juegos</h2>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="q" class="form-control text-white" placeholder="Buscar por título..." value="{{ query }}">
+    </div>
+    <div class="col-md-4">
+        <select name="platform" class="form-select text-white">
+            <option value="">Todas las plataformas</option>
+            {% for plat in platforms %}
+                <option value="{{ plat }}" {% if plat == selected_platform %}selected{% endif %}>{{ plat }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">Buscar</button>
+    </div>
+</form>
+<a href="{% url 'add_game' %}" class="btn btn-success mb-4">+ Añadir juego al catálogo</a>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for game in games %}
+    <div class="col">
+        <div class="card h-100 shadow text-white">
+            {% if game.cover %}
+                <img src="{{ game.cover.url }}" class="card-img-top" alt="{{ game.title }}">
+            {% else %}
+                <img src="https://placehold.co/400x250?text=Sin+Portada" class="card-img-top" alt="{{ game.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ game.title }}</h5>
+                <p class="card-text">
+                    <strong>Plataforma:</strong> {{ game.platform }}<br>
+                    <strong>Desarrollador:</strong> {{ game.developer }}<br>
+                    <strong>Lanzamiento:</strong> {{ game.release_date|date:"Y" }}
+                </p>
+                <a href="{% url 'game_detail' game.id %}" class="btn btn-primary btn-sm">Ver Detalle</a>
+                <a href="{% url 'remove_game' game.id %}" class="btn btn-danger btn-sm ms-2">Eliminar del catálogo</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <div class="alert alert-warning">No se encontraron juegos.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Mi Colección{% endblock %}
+{% block content %}
+<h2 class="mb-4">Mi Colección de Videojuegos</h2>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por título..." value="{{ query }}">
+    </div>
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">Todos los estados</option>
+            {% for key, val in statuses %}
+                <option value="{{ key }}" {% if key == selected_status %}selected{% endif %}>{{ val }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+<a href="{% url 'add_to_collection' %}" class="btn btn-success mb-4">
+    + Añadir juego a colección
+</a>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for user_game in user_games %}
+    <div class="col">
+        <div class="card h-100 shadow">
+            {% if user_game.game.cover %}
+                <img src="{{ user_game.game.cover.url }}" class="card-img-top" alt="{{ user_game.game.title }}">
+            {% else %}
+                <img src="https://placehold.co/400x250?text=Sin+Portada" class="card-img-top" alt="{{ user_game.game.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ user_game.game.title }}</h5>
+                <p class="card-text">
+                    <strong>Estado:</strong> {{ user_game.get_status_display }}<br>
+                    <strong>Añadido:</strong> {{ user_game.added_at|date:"d/m/Y" }}
+                </p>
+                <a href="{% url 'game_detail' user_game.game.id %}" class="btn btn-outline-light btn-sm">Ver Detalle</a>
+                <a href="{% url 'edit_status' user_game.id %}" class="btn btn-primary btn-sm ms-2">Editar Estado</a>
+                <a href="{% url 'add_review' user_game.id %}" class="btn btn-warning btn-sm ms-2">Reseñar</a>
+                <a href="{% url 'remove_from_collection' user_game.id %}" class="btn btn-danger btn-sm ms-2 btn-danger-soft">Eliminar</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <div class="alert alert-info">No tienes juegos en tu colección todavía.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
